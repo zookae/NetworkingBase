@@ -1,0 +1,245 @@
+Initialize engine version: 4.2.1f4 (4d30acc925c2)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 9.0c [atiu9pag.dll 8.14.1.6095]
+    Renderer: ATI FirePro V4800 (FireGL)
+    Vendor:   ATI
+    VRAM:     1012 MB (via DXGI)
+    Caps:     Shader=30 DepthRT=1 NativeDepth=1 NativeShadow=1 DF16=1 DF24=1 INTZ=1 RAWZ=0 NULL=1 RESZ=1 SlowINTZ=1
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\Alex\Documents\NetworkingBase\NetworkingBase_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\Alex\Documents\NetworkingBase\NetworkingBase_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\Alex\Documents\NetworkingBase\NetworkingBase_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\Alex\Documents\NetworkingBase\NetworkingBase_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\Alex\Documents\NetworkingBase\NetworkingBase_Data\Managed\Mono.Data.dll (this message is harmless)
+Loading C:\Users\Alex\Documents\NetworkingBase\NetworkingBase_Data\Managed\Mono.Data.dll into Unity Child Domain
+Platform assembly: C:\Users\Alex\Documents\NetworkingBase\NetworkingBase_Data\Managed\Mono.Data.Sqlite.dll (this message is harmless)
+Loading C:\Users\Alex\Documents\NetworkingBase\NetworkingBase_Data\Managed\Mono.Data.Sqlite.dll into Unity Child Domain
+Platform assembly: C:\Users\Alex\Documents\NetworkingBase\NetworkingBase_Data\Managed\Mono.Data.SqliteClient.dll (this message is harmless)
+Loading C:\Users\Alex\Documents\NetworkingBase\NetworkingBase_Data\Managed\Mono.Data.SqliteClient.dll into Unity Child Domain
+Platform assembly: C:\Users\Alex\Documents\NetworkingBase\NetworkingBase_Data\Managed\System.Data.dll (this message is harmless)
+Loading C:\Users\Alex\Documents\NetworkingBase\NetworkingBase_Data\Managed\System.Data.dll into Unity Child Domain
+- Completed reload, in  0.052 seconds
+desktop: 1920x1080 60Hz; virtual: 3600x1080 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+NetworkServer.Start() start
+ 
+(Filename: C:/BuildAgent/work/cac08d8a5e25d4cb/Runtime/ExportGenerated/StandalonePlayer/UnityEngineDebug.cpp Line: 54)
+
+Connection Test initiated.
+ 
+(Filename: C:/BuildAgent/work/cac08d8a5e25d4cb/Runtime/ExportGenerated/StandalonePlayer/UnityEngineDebug.cpp Line: 54)
+
+NetworkServer.TestConnection()
+ 
+(Filename: C:/BuildAgent/work/cac08d8a5e25d4cb/Runtime/ExportGenerated/StandalonePlayer/UnityEngineDebug.cpp Line: 54)
+
+Starting public address connection test.
+ 
+(Filename:  Line: 2480)
+
+Connection Test done.
+ 
+(Filename: C:/BuildAgent/work/cac08d8a5e25d4cb/Runtime/ExportGenerated/StandalonePlayer/UnityEngineDebug.cpp Line: 54)
+
+GameStateServer.Start()
+ 
+(Filename: C:/BuildAgent/work/cac08d8a5e25d4cb/Runtime/ExportGenerated/StandalonePlayer/UnityEngineDebug.cpp Line: 54)
+
+Platform assembly: C:\Users\Alex\Documents\NetworkingBase\NetworkingBase_Data\Managed\System.dll (this message is harmless)
+Platform assembly: C:\Users\Alex\Documents\NetworkingBase\NetworkingBase_Data\Managed\System.Transactions.dll (this message is harmless)
+Platform assembly: C:\Users\Alex\Documents\NetworkingBase\NetworkingBase_Data\Managed\System.Xml.dll (this message is harmless)
+DBAccess.BasicQuery: select tbl_name from sqlite_master where type='table' OR type='view'
+ 
+(Filename: C:/BuildAgent/work/cac08d8a5e25d4cb/Runtime/ExportGenerated/StandalonePlayer/UnityEngineDebug.cpp Line: 54)
+
+TABLE NAMES: 
+ 
+(Filename: C:/BuildAgent/work/cac08d8a5e25d4cb/Runtime/ExportGenerated/StandalonePlayer/UnityEngineDebug.cpp Line: 54)
+
+GameStateServer instance created.
+ 
+(Filename: C:/BuildAgent/work/cac08d8a5e25d4cb/Runtime/ExportGenerated/StandalonePlayer/UnityEngineDebug.cpp Line: 54)
+
+Using master Server at 0.0.0.0:23466
+ 
+(Filename: C:/BuildAgent/work/cac08d8a5e25d4cb/Runtime/ExportGenerated/StandalonePlayer/UnityEngineDebug.cpp Line: 54)
+
+Using NAT Facilitator Info:67.225.180.24:50005
+ 
+(Filename: C:/BuildAgent/work/cac08d8a5e25d4cb/Runtime/ExportGenerated/StandalonePlayer/UnityEngineDebug.cpp Line: 54)
+
+NetworkServer.Start() done
+ 
+(Filename: C:/BuildAgent/work/cac08d8a5e25d4cb/Runtime/ExportGenerated/StandalonePlayer/UnityEngineDebug.cpp Line: 54)
+
+NetworkServer.StartServer()
+ 
+(Filename: C:/BuildAgent/work/cac08d8a5e25d4cb/Runtime/ExportGenerated/StandalonePlayer/UnityEngineDebug.cpp Line: 54)
+
+Running as server. Player ID is 0.
+ 
+(Filename:  Line: 2480)
+
+NetworkServer.OnServerInitialized()
+ 
+(Filename: C:/BuildAgent/work/cac08d8a5e25d4cb/Runtime/ExportGenerated/StandalonePlayer/UnityEngineDebug.cpp Line: 54)
+
+network: Server
+ 
+(Filename: C:/BuildAgent/work/cac08d8a5e25d4cb/Runtime/ExportGenerated/StandalonePlayer/UnityEngineDebug.cpp Line: 54)
+
+Attempting to connect to master server at 67.225.180.24:23466
+ 
+(Filename:  Line: 2480)
+
+Game server registered with master server
+ 
+(Filename: C:/BuildAgent/work/cac08d8a5e25d4cb/Runtime/ExportGenerated/StandalonePlayer/UnityEngineDebug.cpp Line: 54)
+
+Server initialized.
+ 
+(Filename: C:/BuildAgent/work/cac08d8a5e25d4cb/Runtime/ExportGenerated/StandalonePlayer/UnityEngineDebug.cpp Line: 54)
+
+sendto failed with code -1 for char 9 and length 1464.
+sendto failed with code -1 for char 9 and length 1464.
+sendto failed with code -1 for char 9 and length 1464.
+sendto failed with code -1 for char 9 and length 1464.
+Connected to master server at 67.225.180.24:23466
+ 
+(Filename:  Line: 2480)
+
+Sent host registration to master server, registering a non-NAT assisted game as
+ "EI lab base networking game.", 1, 33, not password protected, "Client server networking skeleton code"
+ 
+(Filename:  Line: 2490)
+
+Received identifier 0 from master server
+ 
+(Filename:  Line: 2480)
+
+NetworkServer.OnMasterServerEvent( mse ): RegistrationSucceeded
+ 
+(Filename: C:/BuildAgent/work/cac08d8a5e25d4cb/Runtime/ExportGenerated/StandalonePlayer/UnityEngineDebug.cpp Line: 54)
+
+New connection established (143.215.129.75:62037)
+ 
+(Filename:  Line: 2480)
+
+Network protocol version 0 connected
+ 
+(Filename:  Line: 2490)
+
+New scope index 0 is now in scope for SceneID: 1 Level Prefix: 0
+ 
+(Filename:  Line: 2480)
+
+Allocated 2 batches of size 50 for player 1
+ 
+(Filename:  Line: 2490)
+
+Sent initalization to player 1
+ 
+(Filename:  Line: 2480)
+
+Player 1 connected from 143.215.129.75:62037
+ 
+(Filename: C:/BuildAgent/work/cac08d8a5e25d4cb/Runtime/ExportGenerated/StandalonePlayer/UnityEngineDebug.cpp Line: 54)
+
+viewID: SceneID: 1 Level Prefix: 0
+ 
+(Filename: C:/BuildAgent/work/cac08d8a5e25d4cb/Runtime/ExportGenerated/StandalonePlayer/UnityEngineDebug.cpp Line: 54)
+
+group: 0
+ 
+(Filename: C:/BuildAgent/work/cac08d8a5e25d4cb/Runtime/ExportGenerated/StandalonePlayer/UnityEngineDebug.cpp Line: 54)
+
+Have a single player waiting to begin: player1
+ 
+(Filename: C:/BuildAgent/work/cac08d8a5e25d4cb/Runtime/ExportGenerated/StandalonePlayer/UnityEngineDebug.cpp Line: 54)
+
+Sent host update to master server with identifier 0
+ 
+(Filename:  Line: 2480)
+
+Received identifier 0 from master server
+ 
+(Filename:  Line: 2480)
+
+NetworkServer.OnMasterServerEvent( mse ): RegistrationSucceeded
+ 
+(Filename: C:/BuildAgent/work/cac08d8a5e25d4cb/Runtime/ExportGenerated/StandalonePlayer/UnityEngineDebug.cpp Line: 54)
+
+Received RPC 'ToServerWString'- mode 0 - sender 143.215.129.75:62037
+ 
+(Filename:  Line: 2490)
+
+Relay RPC - name: ToServerWString - mode 0 - sender 143.215.129.75:62037
+ 
+(Filename:  Line: 2490)
+
+Message from client: 1
+ 
+(Filename: C:/BuildAgent/work/cac08d8a5e25d4cb/Runtime/ExportGenerated/StandalonePlayer/UnityEngineDebug.cpp Line: 54)
+
+Type: 0. Args: a416519762996dd76a1b55639dc97209e6fc3e5f
+ 
+(Filename: C:/BuildAgent/work/cac08d8a5e25d4cb/Runtime/ExportGenerated/StandalonePlayer/UnityEngineDebug.cpp Line: 54)
+
+GameStateServer.MessageFromClient 1: DeviceUniqueIdentifier
+ 
+(Filename: C:/BuildAgent/work/cac08d8a5e25d4cb/Runtime/ExportGenerated/StandalonePlayer/UnityEngineDebug.cpp Line: 54)
+
+args: 
+ 
+(Filename: C:/BuildAgent/work/cac08d8a5e25d4cb/Runtime/ExportGenerated/StandalonePlayer/UnityEngineDebug.cpp Line: 54)
+
+a416519762996dd76a1b55639dc97209e6fc3e5f
+ 
+(Filename: C:/BuildAgent/work/cac08d8a5e25d4cb/Runtime/ExportGenerated/StandalonePlayer/UnityEngineDebug.cpp Line: 54)
+
+A client has disconnected from this server. Player ID 1, IP 143.215.129.75:62037
+ 
+(Filename:  Line: 2480)
+
+The following player disconnected, cleaning up: 1
+ 
+(Filename: C:/BuildAgent/work/cac08d8a5e25d4cb/Runtime/ExportGenerated/StandalonePlayer/UnityEngineDebug.cpp Line: 54)
+
+Number players in waiting: 0
+ 
+(Filename: C:/BuildAgent/work/cac08d8a5e25d4cb/Runtime/ExportGenerated/StandalonePlayer/UnityEngineDebug.cpp Line: 54)
+
+0 RPC function were removed with RemoveRPC
+ 
+(Filename:  Line: 2480)
+
+Destroying objects belonging to player 1
+ 
+(Filename:  Line: 2480)
+
+No objects for the given player ID were deleted 1
+ 
+(Filename:  Line: 1369)
+
+Sent host update to master server with identifier 0
+ 
+(Filename:  Line: 2480)
+
+Received identifier 0 from master server
+ 
+(Filename:  Line: 2480)
+
+NetworkServer.OnMasterServerEvent( mse ): RegistrationSucceeded
+ 
+(Filename: C:/BuildAgent/work/cac08d8a5e25d4cb/Runtime/ExportGenerated/StandalonePlayer/UnityEngineDebug.cpp Line: 54)
+
+NetworkServer.StopServer(); disconnecting and unregistering host.
+ 
+(Filename: C:/BuildAgent/work/cac08d8a5e25d4cb/Runtime/ExportGenerated/StandalonePlayer/UnityEngineDebug.cpp Line: 54)
+
+Successfully disconnected from the server
+ 
+(Filename: C:/BuildAgent/work/cac08d8a5e25d4cb/Runtime/ExportGenerated/StandalonePlayer/UnityEngineDebug.cpp Line: 54)
+
