@@ -341,7 +341,19 @@ public class NetworkClient : MonoBehaviour {
 			DebugConsole.LogWarning( "Did not send client mess, because I AM A CLIENT." );
 		}
 	}
-	
+
+    //assumes we're connected
+    public static void SendClientPairMessage(Pair<NetworkPlayer, NetworkPlayer> pr, NetworkClient.MessType_ToClient messType, params string[] args) {
+        //TODO call the no arg version if args is empty or null
+        if (args == null || args.Length == 0 || args[0] == null || args[0].Length == 0) {
+            NetworkClient.Instance.SendClientMess(pr.First, messType);
+            NetworkClient.Instance.SendClientMess(pr.Second, messType);
+        } else {
+            NetworkClient.Instance.SendClientMess(pr.First, messType, args);
+            NetworkClient.Instance.SendClientMess(pr.Second, messType, args);
+        }
+    }
+
 	//from the client
 	public void SendServerMess( NetworkClient.MessType_ToServer messType, params string[] args )
 	//public void SendServerMess( NetworkClient.MessType messType, string args )

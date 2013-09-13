@@ -30,9 +30,6 @@ public class GameStateServer : MonoBehaviour
     internal DBManipulation dbManip = new DBManipulation( databaseName, false, true );
 	internal ValidationStrategy valStrat = null; //initialized in Start() so that we can use the momoized (database) version intelligently/safely
 	
-	//public enum StateEnum { Unspecified=0, Joining, PlayerPairReady, LocalRelationChosen };
-	//public StateEnum currState = StateEnum.Unspecified;
-	
 	/// <summary>
 	/// Static instance of the GameStateServer.
 	///
@@ -90,26 +87,10 @@ public class GameStateServer : MonoBehaviour
 				rgd = rgd1p;
 				this.dPlayerToGamedata.Add( player, rgd1p );
 
-//				if( messType == NetworkClient.MessType_ToServer.DeviceUniqueIdentifier )
-//				{
-//					rgd.SetUniqueDeviceID( player, args[0] ); //comes from NetworkClient.OnConnectedToServer
-//				}
-//				
-//				//send relations
-//				//NetworkClient.Instance.SendClientMess( player, NetworkClient.MessType_ToClient.RelationsList, strListRelations );			
-//				
-//				//select, send the domain
-//				System.Collections.Generic.KeyValuePair<int,System.Text.StringBuilder> ansPair = rgd.SelectDomainid();
-//				if( ansPair.Equals( default(KeyValuePair<int,System.Text.StringBuilder>) ) )
-//				{	//no more domains to work on! 
-//					rgd.EndGame( "No more domains to play!", null );
-//				}else{ 
-//					rgd.domainID = ansPair.Key;
 //					NetworkClient.Instance.SendClientMess( player, NetworkClient.MessType_ToClient.DomainDescription, ansPair.Value.ToString() );
 //					NetworkClient.Instance.SendClientMess( player, NetworkClient.MessType_ToClient.PlayerPairReady );
-//				}
 			}else{//PLAY AGAIN?
-//				DebugConsole.LogError( "player was not in dPlayerToGamedata nor playersWaitingToGo, so we're ignoring them" );
+				DebugConsole.LogError( "player was not in dPlayerToGamedata nor playersWaitingToGo, so we're ignoring them" );
 //				//this player was not in the wait room, but also not in dPlayerToGamedata. odd?
 //				return null;
 			}
@@ -205,98 +186,9 @@ public class GameStateServer : MonoBehaviour
 	//autmotatically invoked
 	public void PlayerConnected(NetworkPlayer player)
 	{
-//		if( SINGLEPLAYER_ONLY )
-//		{//we are only doing 1player games
-			DebugConsole.LogWarning("Have a single player waiting to begin: player" + player);
-			playersWaitingToGo.Add( player );
+		DebugConsole.LogWarning("Have a single player waiting to begin: player" + player);
+		playersWaitingToGo.Add( player );
 //			NetworkClient.Instance.SendClientMess( player, NetworkClient.MessType_ToClient.RelationsList, strListRelations );
-//		}
-//		else
-//		{//allow for 2player games
-//			if( playersWaitingToGo.Count >= 1 && playersWaitingToGo.Count % 2 != 0 && playersWaitingToGo[ 0 ] != player )
-//			{//have a pair ready to go
-//				NetworkPlayer p1 = playersWaitingToGo[ 0 ];
-//				playersWaitingToGo.RemoveAt( 0 );
-//				Pair<NetworkPlayer,NetworkPlayer> pair = new Pair<NetworkPlayer, NetworkPlayer>(p1,player);
-//				
-//				DebugConsole.LogWarning("Have a pair ready to go for players: " + p1 + " and " + player);
-//				
-//				RunningGameData_2player rgd2p = new RunningGameData_2player( this, pair );
-//				
-//				/* required technique before we were tracking playerid's
-//				if( this.dPlayerToSeenObjpairid.ContainsKey( player ) )
-//					rgd2p.sbListSeenObjpairid.Append( dPlayerToSeenObjpairid[ player ] );
-//				if( this.dPlayerToSeenObjpairid.ContainsKey( p1 ) )
-//					rgd2p.sbListSeenObjpairid.Append( dPlayerToSeenObjpairid[ p1 ] );
-//				*/
-//				
-//				dPlayerToGamedata.Add( p1, rgd2p );
-//				dPlayerToGamedata.Add( player, rgd2p );
-//							
-//				rgd2p.pairPlayers = pair;
-//				rgd2p.dPlayerData[ pair.First ].state = GameStateClient.StateEnum.PlayerPairReady;
-//				rgd2p.dPlayerData[ pair.Second ].state = GameStateClient.StateEnum.PlayerPairReady;
-//				
-//				//relations
-//				SendClientPairMessage( pair, NetworkClient.MessType_ToClient.RelationsList, strListRelations );			
-//				
-//				//TODO choose domainid for the pair
-//				//TODO send the pair: (1) domain name, (2) domain description, 
-//				System.Text.StringBuilder sbSQL = new System.Text.StringBuilder();
-//				sbSQL.Append( "SELECT domainid, domainName, domainDescr, numPairsLeft FROM storyDomain WHERE bUse=1 AND bDone=0 LIMIT 1" );
-//				System.Data.IDataReader res = db.BasicQuery( sbSQL.ToString() ); 
-//				res.Read();
-//				
-//				int tmpI = 0;
-//				int domainid = res.GetInt32( tmpI++ );
-//				string domainName = res.GetString( tmpI++ );
-//				string domainDescr = res.GetString( tmpI++ );
-//				int numPairsLeft = res.GetInt32( tmpI++ );
-//	
-//				rgd2p.domainID = domainid;
-//				System.Text.StringBuilder toSend = new System.Text.StringBuilder();
-//				toSend.Append( domainid ).Append( "|||" ).Append( domainName ).Append( "|||" ).Append( domainDescr );
-//				SendClientPairMessage( pair, NetworkClient.MessType_ToClient.DomainDescription, toSend.ToString() );
-//				
-//				
-//				//If doing add/remove domain objects, then
-//				//SendPlayerPairDomObj( pair );
-//				
-//				
-//				//ready
-//				SendClientPairMessage( pair, NetworkClient.MessType_ToClient.PlayerPairReady );
-//				
-//				//ADDED TO SKIP THE ADD/REMOVE OBJ SCREEN
-//				//send clients the first pair, update round number, inform them they're ready to move
-//				//rgd.roundNumber = 0;
-//				//string nextObjPairString = MakeNextObjPairString( rgd );
-//				//if( nextObjPairString.Length > 0 )
-//				//{
-//				//	SendClientPairMessage( pair, NetworkClient.MessType_ToClient.NewDomainObjPair, nextObjPairString );
-//					//SendClientPairMessage( pair, NetworkClient.MessType_ToClient.SwanReadyToMove );
-//				//}else
-//				//	EndGame( pair );
-//	
-//			}
-			
-//		}
-	}
-	
-	//assumes we're connected
-	public static void SendClientPairMessage( Pair<NetworkPlayer,NetworkPlayer> pr, NetworkClient.MessType_ToClient messType, params string[] args )
-	{
-		
-		//TODO call the no arg version if args is empty or null
-		if( args == null || args.Length == 0 || args[0] == null || args[0].Length == 0 )
-		{
-			NetworkClient.Instance.SendClientMess( pr.First, messType );
-			NetworkClient.Instance.SendClientMess( pr.Second, messType );
-		}
-		else
-		{
-			NetworkClient.Instance.SendClientMess( pr.First, messType, args );
-			NetworkClient.Instance.SendClientMess( pr.Second, messType, args );
-		}
 	}
 	
 	public void PlayerDisconnected(NetworkPlayer player)
@@ -319,21 +211,6 @@ public class GameStateServer : MonoBehaviour
 		}
 		DebugConsole.LogWarning("Number players in waiting: " + playersWaitingToGo.Count );
 	}
-	
-//	private void printRelationsTable()
-//	{
-//		System.Data.IDataReader res = db.BasicQuery( "SELECT objpairrelid, objpairid, relationid_p1, relationid_p2, lastModified FROM objectPairRelation" );
-//		DebugConsole.Log( "objpairrelid | objpairid | relationid_p1 | relationid_p2 | lastModified" );
-//		while( res.Read() ){ 
-//			int tmpI=0;
-//			int objpairrelid = res.GetInt32( tmpI++ ); 
-//			int objpairid = res.GetInt32( tmpI++ ); 
-//			int relationid_p1 = res.GetInt32( tmpI++ ); 
-//			int relationid_p2 = res.GetInt32( tmpI++ ); 
-//			string lastModified = res.GetString( tmpI++ ); 
-//			DebugConsole.Log( objpairrelid + " | " + objpairid + " | " + relationid_p1 + " | " + relationid_p1 + " | " + lastModified );
-//		}
-//	}
 	
 	//triggered when you close the server (any way you quit, besides kill -9)
 	void OnApplicationQuit()
@@ -369,26 +246,8 @@ public class GameStateServer : MonoBehaviour
 			
 			if( dbManip.VerifyTableExistence( RAY_TABLE_NAMES ) ) 
 			{
-				//setup reading Game specific stuff from database
-//				System.Text.StringBuilder sb = new System.Text.StringBuilder();
-//				System.Data.IDataReader res = db.BasicQuery( "SELECT relationid, relationClass, relationName FROM relation" );
-//				while( res.Read() ){ 
-//					if( sb.Length > 0 ) sb.Append( "," );
-//					int relationid = res.GetInt32( 0 ); 
-//					int relationClass = res.GetInt32( 1 );
-//					string relationName = res.GetString( 2 );
-//					sb.Append( relationid.ToString() ).Append( "," ).Append( relationName );
-//					DebugConsole.Log( relationid.ToString() + " | " + relationName );
-//					drelationidTOrelationClass.Add( relationid, relationClass );
-//				}
-//				strListRelations = sb.ToString();
-				
 				//choose which Validation strategy you want to use
 				valStrat = new ValidationStrategyMemoized( dbManip );
-				
-//				Dictionary<int,int>.ValueCollection relationClasses = drelationidTOrelationClass.Values;
-//				uniqueRelationClasses = new HashSet<int>( drelationidTOrelationClass.Values );
-				
 			}else{ //probably don't have a propperly set up db. 
 				//TODO give them an easy way to set one up.
 				DebugConsole.LogError( "Did not find expected table(s) in db. Make sure it is set up!" );
@@ -397,11 +256,6 @@ public class GameStateServer : MonoBehaviour
 			doneStart = true;
 		}
 	}	
-	
-	
-	// Update is called once per frame
-	//void Update () {}
-	
 #endif
 	
 }
