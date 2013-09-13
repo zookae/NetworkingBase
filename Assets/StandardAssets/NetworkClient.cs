@@ -384,7 +384,7 @@ public class NetworkClient : MonoBehaviour {
 		}
 	}
 
-		/*
+    /*
 	 * The only params that can be sent over rpc:
 	 * int, float, string, NetworkPlayer, NetworkViewID, Vector3, Quaternion
 SEE ALSO http://answers.unity3d.com/questions/318593/using-rpc-to-send-a-list.html
@@ -460,19 +460,34 @@ SEE ALSO http://answers.unity3d.com/questions/318593/using-rpc-to-send-a-list.ht
 		DebugConsole.Log( "NetworkMessageInfo: " + nmi );
 		Debug.Log( "Client: RPCTest!" + mess );
 	}
+
+    public void SendAllSpawnBox( Vector3 location, NetworkViewID nvid ) {
+        DebugConsole.Log("SendAllSpawnBox called with viewID: " + nvid);
+        networkView.RPC("SpawnBox", RPCMode.AllBuffered, nvid, location );
+        DebugConsole.Log("SendAllSpawnBox done");
+    }
 	
 	//http://docs.unity3d.com/Documentation/ScriptReference/Network.AllocateViewID.html?from=NetworkView
 	[RPC]
 	void SpawnBox(NetworkViewID viewID, Vector3 location) 
 	{
-		Debug.Log( "SpawnBox called." );
-		DebugConsole.Log( "SpawnBox RPC called." );
-	    // Instantate the prefab locally
-	    //Transform clone;
-	    //clone = Instantiate(cubePrefab, location, Quaternion.identity) as Transform;
-	    //NetworkView nView;
-	    //nView = (NetworkView)clone.GetComponent(typeof(NetworkView));
-	    //nView.viewID = viewID;
+        DebugConsole.Log("NetworkClient.[RPC]SpawnBox called.");
+
+	    // Instantate the prefab locally        
+        GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        go.transform.position = location;
+        go.transform.rotation = Quaternion.identity;
+
+        go.AddComponent<NetworkView>(); // attach network view to object - must be present to set viewID
+        go.GetComponent<NetworkView>().viewID = viewID;
+        NetworkViewID vID = go.GetComponent<NetworkView>().viewID;
+        DebugConsole.Log("SpawnBox called with viewID : " + vID);
+
+        go.AddComponent<Rigidbody>();
+        go.GetComponent<Rigidbody>().useGravity = false;
+
+        go.AddComponent<NetworkMouseDrag>();
+        
 		DebugConsole.Log( "SpawnBox RPC done." );
 	}
 }
