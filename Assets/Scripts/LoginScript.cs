@@ -76,6 +76,18 @@ public class LoginScript : MonoBehaviour {
             // get all objects tagged saveable
             // invoke their DBstring construction
         }
+        if (GUILayout.Button("DB writing - save all")) {
+            DebugConsole.Log("searching for DB_cube");
+            DBSaveString[] goes = GameObject.FindObjectsOfType(typeof(DBSaveString)) as DBSaveString[]; // find DB cube from scene
+            foreach (DBSaveString go in goes) {
+                //DebugConsole.Log("sending DBSave string for position: " + go.transform.position);
+                DebugConsole.Log("sending DBSave string for position: " + go.dbStr.DBString());
+                go.SendStringToServer();
+            }
+
+            // get all objects tagged saveable
+            // invoke their DBstring construction
+        }
         if (GUILayout.Button("Toggle debug")) {
             DebugConsole.IsOpen = !DebugConsole.IsOpen;
         }
