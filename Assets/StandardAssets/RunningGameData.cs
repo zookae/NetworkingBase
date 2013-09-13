@@ -26,10 +26,10 @@ public abstract class RunningGameData
 	abstract public void ResetVarsForNewGame();
 
 	
-	virtual public System.Collections.Generic.KeyValuePair<int/*domainId*/,System.Text.StringBuilder/*domainid|||domainName|||domainDescr*/> 
-		SelectDomainid()
-	{
-		System.Collections.Generic.KeyValuePair<int,System.Text.StringBuilder> ansPair = new System.Collections.Generic.KeyValuePair<int,System.Text.StringBuilder>();
+//	virtual public System.Collections.Generic.KeyValuePair<int/*domainId*/,System.Text.StringBuilder/*domainid|||domainName|||domainDescr*/> 
+//		SelectDomainid()
+//	{
+//		System.Collections.Generic.KeyValuePair<int,System.Text.StringBuilder> ansPair = new System.Collections.Generic.KeyValuePair<int,System.Text.StringBuilder>();
 		//choose domainid for the solo player
 //		//send the: (0) domainid, (1) domain name, (2) domain description, 
 //		System.Text.StringBuilder sbSQL = new System.Text.StringBuilder();
@@ -52,13 +52,13 @@ public abstract class RunningGameData
 //			//If doing add/remove domain objects, then
 //			//SendPlayerPairDomObj( pair );
 //		}
-		return ansPair;
-	}
+//		return ansPair;
+//	}
 	
 	//THIS FINDS A OBJECT PAIR FOR WHICH THERE ARE NO ANSWERS (assumes subclasses will find obj pair with some answers, but no answers coming from calling player (pair))
 	//note that this means there is no 'npc' data to go off of
-	virtual public string MakeNextObjPairString()
-	{
+//	virtual public string MakeNextObjPairString()
+//	{
 //		Debug.Log( "base. MakeNextObjPairString 1 " );
 //		System.Text.StringBuilder sbSQL = new System.Text.StringBuilder();
 //		
@@ -103,7 +103,7 @@ public abstract class RunningGameData
 //		
 //		System.Data.IDataReader res = gss.db.BasicQuery( sbSQL.ToString() ); 
 		
-		System.Text.StringBuilder sb = new System.Text.StringBuilder();
+//		System.Text.StringBuilder sb = new System.Text.StringBuilder();
 //		while( res.Read() ){
 //			//SELECT objpairid, object1id, object2id, nameObj1, nameObj2 FROM vwObjPair
 //			int tmpI = 0;
@@ -134,16 +134,16 @@ public abstract class RunningGameData
 //		}
 //		DebugConsole.Log( "Query result: " );
 //		DebugConsole.Log( sb.ToString() );
-		return sb.ToString();
-	}
-	abstract public void Mess_JustGotToSwanScreen( NetworkPlayer player, string[] args );
-	abstract public void SendFinalListAndFirstPairWhenReady( NetworkPlayer player );
-	abstract public void Mess_DomainObjectIDsDeleted( NetworkPlayer player, string[] args );
-	abstract public void Mess_DomainObjectIDsNOTDeleted( NetworkPlayer player, string[] args );
-	abstract public void Mess_DomainObjectNamesAdded( NetworkPlayer player, string[] args );
-	abstract public void Mess_SwanAtEndOfScreen( NetworkPlayer player, string[] args );
+//		return sb.ToString();
+//	}
+//	abstract public void Mess_JustGotToSwanScreen( NetworkPlayer player, string[] args );
+//	abstract public void SendFinalListAndFirstPairWhenReady( NetworkPlayer player );
+//	abstract public void Mess_DomainObjectIDsDeleted( NetworkPlayer player, string[] args );
+//	abstract public void Mess_DomainObjectIDsNOTDeleted( NetworkPlayer player, string[] args );
+//	abstract public void Mess_DomainObjectNamesAdded( NetworkPlayer player, string[] args );
+//	abstract public void Mess_SwanAtEndOfScreen( NetworkPlayer player, string[] args );
 	abstract public void Mess_PlayerHasNoLives( NetworkPlayer player, string[] args );
-	abstract public void Mess_SelectedRelation( NetworkPlayer player, string[] args );
+//	abstract public void Mess_SelectedRelation( NetworkPlayer player, string[] args );
 	
 	protected RunningGameData( GameStateServer inGSS )
 	{

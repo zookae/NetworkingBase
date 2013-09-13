@@ -40,7 +40,7 @@ public class GameStateServer : MonoBehaviour
 	// This is the file path of the database file we want to use
 	// Right now, it'll load espDB.sqlite3 in the project's root folder.
 	// If one doesn't exist, it will be automatically created.
-	public static String databaseName = "dbESP.sqlite3";
+	public static String databaseName = "db.sqlite3";
  
 	// This is the name of the table we want to use
 	//public String tableName = "TestTable";
@@ -172,24 +172,19 @@ public class GameStateServer : MonoBehaviour
 		}
 		else// if( messType != NetworkClient.MessType_ToServer.PlayAgain && SINGLEPLAYER_ONLY )
 		{//not in dictionary dPlayerToGamedata, and not a play again message; assume 1 player?
-//			DebugConsole.LogError( "non-existant player (not in dPlayerToGamedata). Assuming 1 player" );
-//			
-//			int tmpI = playersWaitingToGo.IndexOf( player );
-//		    if( tmpI >= 0 ) //disconnected from wait room.
-//			{
-//				//remove from wait room
-//				playersWaitingToGo.RemoveAt( tmpI ); 
-//				
-//				//make single player data
-//				RunningGameData_1player rgd1p = new RunningGameData_1player( this, player ); 
-//				rgd = rgd1p;
-//				this.dPlayerToGamedata.Add( player, rgd1p );
-//				
-//				/* required technique before we were tracking playerid's
-//				if( this.dPlayerToSeenObjpairid.ContainsKey( player ) )
-//					rgd1p.sbListSeenObjpairid.Append( dPlayerToSeenObjpairid[ player ] );
-//				*/
-//				
+			DebugConsole.LogError( "non-existant player (not in dPlayerToGamedata). Assuming 1 player" );
+			
+			int tmpI = playersWaitingToGo.IndexOf( player );
+		    if( tmpI >= 0 ) //disconnected from wait room.
+			{
+				//remove from wait room
+				playersWaitingToGo.RemoveAt( tmpI ); 
+				
+				//make single player data
+				RunningGameData_1player rgd1p = new RunningGameData_1player( this, player ); 
+				rgd = rgd1p;
+				this.dPlayerToGamedata.Add( player, rgd1p );
+
 //				if( messType == NetworkClient.MessType_ToServer.DeviceUniqueIdentifier )
 //				{
 //					rgd.SetUniqueDeviceID( player, args[0] ); //comes from NetworkClient.OnConnectedToServer
@@ -208,11 +203,11 @@ public class GameStateServer : MonoBehaviour
 //					NetworkClient.Instance.SendClientMess( player, NetworkClient.MessType_ToClient.DomainDescription, ansPair.Value.ToString() );
 //					NetworkClient.Instance.SendClientMess( player, NetworkClient.MessType_ToClient.PlayerPairReady );
 //				}
-//			}else{//PLAY AGAIN?
+			}else{//PLAY AGAIN?
 //				DebugConsole.LogError( "player was not in dPlayerToGamedata nor playersWaitingToGo, so we're ignoring them" );
 //				//this player was not in the wait room, but also not in dPlayerToGamedata. odd?
 //				return null;
-//			}
+			}
 			
 		}
 		return rgd; //always returns null, unless we already have a mapping from player to RunningGameData
@@ -292,7 +287,7 @@ public class GameStateServer : MonoBehaviour
 //			}
 			break;
 		case NetworkClient.MessType_ToServer.DeviceUniqueIdentifier:  //may be HANDLED IN getRunningGameData
-		//	rgd.SetUniqueDeviceID( player, args[0] ); //comes from NetworkClient.OnConnectedToServer
+			rgd.SetUniqueDeviceID( player, args[0] ); //comes from NetworkClient.OnConnectedToServer
             DebugConsole.Log( "Got a UDID of: " + args[0] );
 			break;
 		default:
@@ -472,17 +467,17 @@ public class GameStateServer : MonoBehaviour
 			List<string> pragResults = db.TryEnableForeignKeys(); //VERY IMPORTANT to ensure foreign keys are enforced
 			
 			
-			if( true //TEST FOR YOUR TABLE / VIEW existence here
-//				tableNames.Contains( "relation" ) //relationid|relationName|relationDescr
+			if( 
+					tableNames.Contains( "player" )
+				&& tableNames.Contains( "topscore" )			
+				//				tableNames.Contains( "relation" ) //relationid|relationName|relationDescr
 //				&& tableNames.Contains( "storyDomain" ) 
 //				&& tableNames.Contains( "storyObject" ) 
 //				&& tableNames.Contains( "storyObjectPair" ) 
 //				&& tableNames.Contains( "objectPairRelation" ) 
 //				&& tableNames.Contains( "objectPairRelation_1player" ) 
 //				&& tableNames.Contains( "relationGoldStandard" ) 
-//				&& tableNames.Contains( "player" )
 //				&& tableNames.Contains( "confidenceLookupMC" )			
-//				&& tableNames.Contains( "topscore" )			
 				) 
 			{
 				//setup reading Game specific stuff from database
