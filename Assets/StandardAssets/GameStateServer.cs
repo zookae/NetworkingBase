@@ -65,7 +65,7 @@ public class GameStateServer : MonoBehaviour
 	
 	//returns null only in error
 	//NOTE you may want to put your "decide which game to give the player" logic here (in the case that the dictionary doesn't have a mapping for this player -> game)
-	private RunningGameData getRunningGameData( NetworkPlayer player, NetworkClient.MessType_ToServer messType, string[] args )
+	private RunningGameData getRunningGameData( NetworkPlayer player, NetworkClient.MessType_ToServer messType, string args )
 	{
 		RunningGameData rgd = null;
 		if( dPlayerToGamedata.ContainsKey( player ) )
@@ -100,20 +100,14 @@ public class GameStateServer : MonoBehaviour
 	}
 	
 	//THIS IS THE KEY METHOD OF THIS CLASS
-	public void MessageFromClient( NetworkPlayer player, NetworkClient.MessType_ToServer messType, string[] args )
+	public void MessageFromClient( NetworkPlayer player, NetworkClient.MessType_ToServer messType, string args )
 	{
 		DebugConsole.LogWarning( "GameStateServer.MessageFromClient " + player + ": " + messType.ToString() );
 		DebugConsole.Log( "args: " );
 		if( args == null || args.Length == 0 )
 			DebugConsole.Log( "<null or zero length>" );
 		else
-			foreach( string tmpA in args ) 
-				if( tmpA == null )
-					DebugConsole.Log( "<null>" );
-				else if( tmpA.Length == 0 )
-					DebugConsole.Log( "\"\"" );
-				else
-					DebugConsole.Log( tmpA );
+            DebugConsole.Log( args );
 		
 		//if( args != null && args.Length > 0 ) DebugConsole.Log( NetworkClient.RayToString( args ) );
 		RunningGameData rgd = getRunningGameData( player, messType, args );		
@@ -125,7 +119,7 @@ public class GameStateServer : MonoBehaviour
 		switch( messType )
 		{
             case NetworkClient.MessType_ToServer.SaveDBStr:
-                DebugConsole.Log("client requested save string : " + args[0]);
+                DebugConsole.Log("client requested save string : " + args);
                 break;
 		case NetworkClient.MessType_ToServer.DomainObjectIDsDeleted:
 //			rgd.Mess_DomainObjectIDsDeleted( player, args );
@@ -176,8 +170,8 @@ public class GameStateServer : MonoBehaviour
 //			}
 			break;
 		case NetworkClient.MessType_ToServer.DeviceUniqueIdentifier:  //may be HANDLED IN getRunningGameData
-			rgd.SetUniqueDeviceID( player, args[0] ); //comes from NetworkClient.OnConnectedToServer
-            DebugConsole.Log( "Got a UDID of: " + args[0] );
+			rgd.SetUniqueDeviceID( player, args ); //comes from NetworkClient.OnConnectedToServer
+            DebugConsole.Log( "Got a UDID of: " + args );
 			break;
 		default:
 			DebugConsole.Log( "MessageFromClient: default" );

@@ -56,6 +56,7 @@ public class LoginScript : MonoBehaviour {
             go.AddComponent<Rigidbody>();
             go.GetComponent<Rigidbody>().useGravity = false;
 
+            //go.gameObject.tag = "DB_cube";
             go.name = "DB_cube";
 
             go.AddComponent<DBPositionToString>(); // attach component to enable DB string representation of position
@@ -65,11 +66,12 @@ public class LoginScript : MonoBehaviour {
         }
         if (GUILayout.Button("DB writing - position")) {
             DebugConsole.Log("searching for DB_cube");
-
-            GameObject go = GameObject.Find("DB_cube"); // find DB cube from scene
-
-            DebugConsole.Log("sending DB_cube string for position: " + go.transform.position);
-            go.GetComponent<DBSaveString>().SendStringToServer();
+            GameObject go = GameObject.Find("DB_cube");
+            //GameObject[] goes = GameObject.FindGameObjectsWithTag("DB_cube"); // find DB cube from scene
+            //foreach (GameObject go in goes) {
+                DebugConsole.Log("sending DB_cube string for position: " + go.transform.position);
+                go.GetComponent<DBSaveString>().SendStringToServer();
+            //}
 
             // get all objects tagged saveable
             // invoke their DBstring construction

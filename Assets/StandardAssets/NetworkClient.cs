@@ -356,11 +356,11 @@ public class NetworkClient : MonoBehaviour {
     }
 
 	//from the client
-	public void SendServerMess( NetworkClient.MessType_ToServer messType, params string[] args )
+	public void SendServerMess( NetworkClient.MessType_ToServer messType, string args )
 	//public void SendServerMess( NetworkClient.MessType messType, string args )
 	{
 		DebugConsole.LogWarning( "Sending message to server: " + messType.ToString() );
-		if( args != null && args.Length > 0 ) DebugConsole.Log( "args: " + RayToString(args,",") );
+		if( args != null && args.Length > 0 ) DebugConsole.Log( "args: " + args );
 		
 		if( Network.isClient ) 
 		{
@@ -371,7 +371,7 @@ public class NetworkClient : MonoBehaviour {
 			{	
 				//DebugConsole.Log( "  args - [" + string.Join(",",args) + "]" );
 				//networkView.RPC("ToServerWString", RPCMode.Server, networkView.viewID, messType, string.Join(",",args) );
-				networkView.RPC("ToServerWString", RPCMode.Server, networkView.viewID, (int)messType, RayToString( args,"," ) );
+				networkView.RPC("ToServerWString", RPCMode.Server, networkView.viewID, (int)messType, args );
 			}
 			else
 			{
@@ -412,22 +412,17 @@ SEE ALSO http://answers.unity3d.com/questions/318593/using-rpc-to-send-a-list.ht
 #else
 		//DebugConsole.LogWarning( "Called the string param version of the rpc." );
 		DebugConsole.LogWarning( "Message from client: " + nmi.sender );
-        DebugConsole.LogWarning( "Type: " + messType + ". Args: " + args );
+        DebugConsole.LogWarning("Type: " + ((NetworkClient.MessType_ToServer)messType).ToString() + ". Args: " + args);
 		if( Network.isClient ) DebugConsole.LogError( "Oh noz, ToServer invoked on the client." );
 		//if( Network.isServer ) DebugConsole.LogWarning( "ToServer invoked on server." );
 	
-		string[] rayArgs = null;
+		//string[] rayArgs = null;
 		if( args == null )
-			DebugConsole.LogWarning( "ToServer3 had null string arguments." );
-		else
-		{
-			//DebugConsole.Log( "args - " + args );
-			rayArgs = args.Split( new char[] {','} );
-		}
+            DebugConsole.LogWarning("ToServerWString had null string arguments.");
 		
 		NetworkClient.MessType_ToServer castMess = (NetworkClient.MessType_ToServer) messType;
 		
-		GameStateServer.Instance.MessageFromClient( nmi.sender, castMess, rayArgs );
+		GameStateServer.Instance.MessageFromClient( nmi.sender, castMess, args );
 #endif
 	}
 	
