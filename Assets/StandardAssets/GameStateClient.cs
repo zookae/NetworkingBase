@@ -6,76 +6,10 @@ using System.Text.RegularExpressions;
 
 public class GameStateClient : MonoBehaviour 
 {
-//	public static int MAXIMUM_ROUNDS = 10;
-//	public static int PLAYER_LIFE_WORTH = 100;
-//	public static int SINGLE_PLAYER_DELAY_SEC = 10; //65 seemed too much... maybe 40?
-//	public static int SPEED_COINDROP = 4;
-//	public static int SPEED_FEATHERDROP = 4;
-//	public static int SPEED_SWAN = 5;
-//	public static int PLAYER_INIT_NUMLIVES = 4;
-	
 	static GameStateClient _instance;
 	private static bool doneStart = false;
 	
 	public bool isConnected = false;
-	
-//	public enum StateEnum { Unspecified=0, Joining
-//		, PlayerPairReady //sent to players when they have been paired up on the server side
-//		, LocalRelationChosen 
-//		, WaitingForDomObjPair //sent to server when client is waiting for a pair of dom obj
-//		, ChoosingLocalRelation
-//		, SwanReadyToMove //go ahead and move the swan
-//		, GameOver
-//	};
-//	public long millisecChoosingRelation = 0;
-//	
-//	public StateEnum currState = StateEnum.Unspecified;
-//	public bool bPlayerPairReady = false;
-	
-//	public string[] relationList = null; //holds relations sent from server
-//	public SortedList<string,int> mRelationToID = null; //maps string relation to its id (from server)
-//	
-//	public int domainid = -1;
-//	public string domainName = null;
-//	public string domainDescr = null;
-//	
-//	public Dictionary<string /*tmpText*/,string/*relationid*/> mObjpairtextToObjpairid = new Dictionary<string, string>();
-//	
-//	public string[] domainObjects = null; //initially just the obj we want
-//	public string[] strAgreedObjDeleted = null;
-//	public string[] strAgreedObjNOTDeleted = null;
-//	public string[] strAgreedObjAdded = null;
-
-//	public string gameOverMessage = null;
-//	
-//	public SortedList<string /*storyObjectName*/,int/*storyObjectID*/> mStoryObjectToID = null; //maps string story object to its id (from server) for add/remove part of game
-//	public Dictionary<string /*storyObjectID*/,string/*storyObjectName*/> mObjectidToObjectname = new Dictionary<string, string>();
-//	
-//	public Pair<string,string> pairDomainObj = null; //will hold the current pair from the server
-//	public int idPairDomainObj = -1; //holds id of current pair of objects
-//	public bool didLastRelationPairAgree = false; //true ONLY when the last was in agreement
-//	public bool wasFirstToSelectRelation = false; //true when the player was first to select relation for the previous pair
-//	
-//	public bool bAmWinner = false;
-//	
-//	public bool heartClicked = false;
-//	public int playerScore = 0;
-//	public string swanName = null;
-//	public bool tagroba = false;
-	
-//	public ArrayList deletedWords = new ArrayList();
-	
-//	public static string[] getAllValuesForKeys( SortedList<string,int> map, ArrayList lStringKeys )
-//	{
-//		if( map == null || lStringKeys == null ) return null;
-//		
-//		string[] ans = new string[ lStringKeys.Count ];
-//		for( int i=0; i<lStringKeys.Count; i++ )
-//		{
-//			if( map.ContainsKey( (string)lStringKeys[i] ) )	ans[i] = map[ (string)lStringKeys[i] ].ToString();	
-//		}
-//		return ans;
-//	}
 	
 	/// <summary>
 	/// Static instance of the GameStateClient.
@@ -108,45 +42,7 @@ public class GameStateClient : MonoBehaviour
 	{
 		DebugConsole.Log( "GameStateClient.ReInit()" );
 		doneStart = true;
-		
-		//isConnected = true;
-		
-//		
-//		currState = StateEnum.Unspecified;
-//		bPlayerPairReady = false;
-//		
-//		//relationList = null; //holds relations sent from server
-//		//mRelationToID = null; //maps string relation to its id (from server)
-//		
-//		domainid = -1;
-//		domainName = null;
-//		domainDescr = null;
-//		
-//		//mObjpairtextToObjpairid = new Dictionary<string, string>();
-//		
-//		domainObjects = null; //initially just the obj we want
-//		strAgreedObjDeleted = null;
-//		strAgreedObjNOTDeleted = null;
-//		strAgreedObjAdded = null;
-//	
-//		gameOverMessage = null;
-//		
-//		//mStoryObjectToID = null; //maps string story object to its id (from server) for add/remove part of game
-//		//mObjectidToObjectname = new Dictionary<string, string>();
-//		
-//		pairDomainObj = null; //will hold the current pair from the server
-//		idPairDomainObj = -1; //holds id of current pair of objects
-//		didLastRelationPairAgree = false; //true ONLY when the last was in agreement
-//		wasFirstToSelectRelation = false; //true when the player was first to select relation for the previous pair
-//		
-//		bAmWinner = false;		
-//		heartClicked = false;
-//		playerScore = 0;
-//		swanName = null;
-//		tagroba = false;
-//		deletedWords = new ArrayList();
-//		
-//		millisecChoosingRelation = 0;
+
 	}
 	
 	public void MessageFromServer( NetworkClient.MessType_ToClient messType, string[] args )
