@@ -42,12 +42,12 @@ class RunningGameData_1player: RunningGameData
 	{
 		Debug.Log( "SetUniqueDeviceID for player " + player + " with udid " + udid );
 		playerData.uniqueDeviceID = udid;
-		
-		int playerid = gss.getPlayerID( udid );
+
+        int playerid = gss.dbManip.getPlayerID(udid);
 		if( playerid == -1 ) 
 		{//first time player; welcome!
 			DebugConsole.Log( "Got a first time player!" );
-			playerid = gss.createPlayerID( udid );
+            playerid = gss.dbManip.createPlayerID(udid);
 			playerData.isFirstTimePlayer = true;
 		}
 		else{//returning player
@@ -212,16 +212,7 @@ class RunningGameData_1player: RunningGameData
 	{
 		if( /* this.iNumSeen > 0 && */ bHaveSavedScores == false )
 		{//only save if the player has seen at least 1 relation, and has not reached 'end game'
-			System.Text.StringBuilder sbSQL = new System.Text.StringBuilder();
-			sbSQL.Append( "UPDATE OR IGNORE player SET gamesPlayed = gamesPlayed+1 WHERE playerid=" ).Append( playerData.playerid );
-			gss.db.BasicQuery( sbSQL.ToString() );
-			
-			sbSQL.Remove( 0, sbSQL.Length );		
-			sbSQL.Append( "INSERT OR IGNORE INTO topscore(playerid,scoreValue,iOfPlayAgain) VALUES(" );
-			sbSQL.Append( playerData.playerid ).Append( "," );
-			sbSQL.Append( playerData.playerScore ).Append( "," );
-			sbSQL.Append( this.iOfPlayAgain ).Append( ")" );
-			gss.db.BasicQuery( sbSQL.ToString() );
+            gss.dbManip.SavePlayerScoreStats(playerData, this.iOfPlayAgain);
 			
 			bHaveSavedScores = true;
 			iOfPlayAgain++; //update count of play again

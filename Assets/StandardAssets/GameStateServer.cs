@@ -11,119 +11,24 @@ public class GameStateServer : MonoBehaviour
 	#if UNITY_WEBPLAYER
 	
 	#else
-	
-	//static readonly 
-//	public const bool SINGLEPLAYER_ONLY = true;
-//	public const double MINIMUM_CONFIDENCE_RELATION = 0.85;
-//	public const int MAXIMUM_ANSWERS_BEFORE_FAIL = 10;
-	
+
 	static GameStateServer _instance;
 	private static bool doneStart = false;
 	public static System.Random rand = new System.Random();
 	
 	// use Network.connections to see all connections
 	private List<NetworkPlayer> playersWaitingToGo = new List<NetworkPlayer>();
-	//private Dictionary<NetworkPlayer,Pair<NetworkPlayer, NetworkPlayer>> dPlayerToPlayerpair = new Dictionary<NetworkPlayer, Pair<NetworkPlayer, NetworkPlayer>>();
-	//private Dictionary<Pair<NetworkPlayer, NetworkPlayer>,RunningGameData> dPlayerpairToGamedata = new Dictionary<Pair<NetworkPlayer, NetworkPlayer>,RunningGameData>();
 	internal Dictionary<NetworkPlayer,RunningGameData> dPlayerToGamedata = new Dictionary<NetworkPlayer,RunningGameData>();
-	
-	//required technique before we were tracking playerid's
-	//the following is only to be used for "play again" behavior
-	//internal Dictionary<NetworkPlayer,System.Text.StringBuilder /*sbListSeenObjpairid*/> dPlayerToSeenObjpairid = new Dictionary<NetworkPlayer, System.Text.StringBuilder>();
-	
-//	internal Dictionary<int/*relationid*/,int/*relationClass*/> drelationidTOrelationClass = new Dictionary<int,int>();
-//	internal HashSet<int> uniqueRelationClasses = null; //created after drelationidTOrelationClass is populated
-	
-//	internal HashSet<int> hsObjpairidInPlay = new HashSet<int>();
 	
 	//database stuff
 	// This is the file path of the database file we want to use
 	// Right now, it'll load espDB.sqlite3 in the project's root folder.
 	// If one doesn't exist, it will be automatically created.
 	public static String databaseName = "db.sqlite3";
- 
-	// This is the name of the table we want to use
-	//public String tableName = "TestTable";
+    private string[] RAY_TABLE_NAMES = new string[] {"player", "topscore", "confidenceLookupMC"};
 
-	internal DBAccess db = new DBAccess();
+    internal DBManipulation dbManip = new DBManipulation( databaseName, false, true );
 	internal ValidationStrategy valStrat = null; //initialized in Start() so that we can use the momoized (database) version intelligently/safely
-	
-//	private static string[] DEFAULT_DOMAIN_OBJECTS = { "D.O._1", "D.O._2", "D.O._3", "D.O._4", "D.O._5", "D.O._6", "D.O._7"};
-	//private static string DEFAULT_NORELATION = "-1";
-	
-//	private string strListRelations = null; //the string to send to clients that lists relationid, relation name for all relations
-	
-	//don't use; instead use the two atomic operations
-	/*
-	private int getOrCreatePlayerID( string udid )
-	{
-		Debug.Log( "getOrCreatePlayerID" );
-		int playerid = -1;
-		System.Text.StringBuilder sbSQLSelect = new System.Text.StringBuilder();
-		
-		sbSQLSelect.Append( "SELECT playerid FROM player WHERE udid=" ).Append( udid );
-
-		System.Data.IDataReader res = db.BasicQuery( sbSQLSelect.ToString() ); 
-		
-		if( res.Read() )
-		{//player already exists; return the id
-			playerid = res.GetInt32( 0 ); //WELCOME BACK!
-		}else{//else we don't have a player id and need to get one		
-			System.Text.StringBuilder sbSQLInsert = new System.Text.StringBuilder();
-			sbSQLInsert.Append( "INSERT OR IGNORE INTO player (udid) VALUES ( '" ).Append( udid ).Append( "' )" );
-			db.BasicQuery( sbSQLInsert.ToString() ); //inserts
-			
-			res = db.BasicQuery( sbSQLSelect.ToString() ); //get the new playerid
-			if( res.Read() )
-			{//got it, as expected
-				playerid = res.GetInt32( 0 ); //FIRST TIME PLAYER
-			}else{
-				Debug.LogError( "Failed to get playerid for udid just inserted. Very very odd, and evil." );
-			}
-		}
-		return playerid;
-	}
-	*/
-	
-	//returns -1 if the player doesn't exist
-	internal int getPlayerID( string udid )
-	{
-		Debug.Log( "getPlayerID" );
-		int playerid = -1;
-		System.Text.StringBuilder sbSQLSelect = new System.Text.StringBuilder();
-		
-		sbSQLSelect.Append( "SELECT playerid FROM player WHERE udid='" ).Append( udid ).Append("'");
-
-		System.Data.IDataReader res = db.BasicQuery( sbSQLSelect.ToString() ); 
-		
-		if( res.Read() )
-		{//player already exists; return the id
-			playerid = res.GetInt32( 0 ); //WELCOME BACK!
-		}//else we don't have a player id and need to get one (return -1)
-		return playerid;
-	}
-	
-	internal int createPlayerID( string udid )
-	{
-		Debug.Log( "createPlayerID" );
-		int playerid = -1;
-		System.Text.StringBuilder sbSQLInsert = new System.Text.StringBuilder();
-		sbSQLInsert.Append( "INSERT OR IGNORE INTO player (udid) VALUES ( '" ).Append( udid ).Append( "' )" );
-		db.BasicQuery( sbSQLInsert.ToString() ); //inserts
-		
-		System.Text.StringBuilder sbSQLSelect = new System.Text.StringBuilder();		
-		sbSQLSelect.Append( "SELECT playerid FROM player WHERE udid='" ).Append( udid ).Append("'");
-		
-		System.Data.IDataReader res = db.BasicQuery( sbSQLSelect.ToString() ); //get the new playerid
-		if( res.Read() )
-		{//got it, as expected
-			playerid = res.GetInt32( 0 ); //FIRST TIME PLAYER
-		}else{
-			Debug.LogError( "Failed to get playerid for udid just inserted. Very very odd, and evil." );
-		}
-		return playerid;
-	}
-
 	
 	//public enum StateEnum { Unspecified=0, Joining, PlayerPairReady, LocalRelationChosen };
 	//public StateEnum currState = StateEnum.Unspecified;
@@ -433,7 +338,8 @@ public class GameStateServer : MonoBehaviour
 	//triggered when you close the server (any way you quit, besides kill -9)
 	void OnApplicationQuit()
 	{
-		db.CloseDB();
+
+        dbManip.OnApplicationQuit();
 		while( playersWaitingToGo.Count > 0 )
 		{
 			NetworkPlayer player = playersWaitingToGo[ playersWaitingToGo.Count - 1 ];
@@ -458,27 +364,10 @@ public class GameStateServer : MonoBehaviour
 		if( !doneStart )
 		{//put init stuff here
 			DebugConsole.Log("GameStateServer.Start()");
-			db.OpenDB(databaseName);
+            
+			dbManip.TryEnableForeignKeys(); //VERY IMPORTANT to ensure foreign keys are enforced
 			
-			List<string> tableNames = db.GetAllTableNames();
-			DebugConsole.Log( "TABLE NAMES: " );
-			foreach( string name in tableNames )	DebugConsole.Log( name );
-			
-			List<string> pragResults = db.TryEnableForeignKeys(); //VERY IMPORTANT to ensure foreign keys are enforced
-			
-			
-			if( 
-					tableNames.Contains( "player" )
-				&& tableNames.Contains( "topscore" )			
-				//				tableNames.Contains( "relation" ) //relationid|relationName|relationDescr
-//				&& tableNames.Contains( "storyDomain" ) 
-//				&& tableNames.Contains( "storyObject" ) 
-//				&& tableNames.Contains( "storyObjectPair" ) 
-//				&& tableNames.Contains( "objectPairRelation" ) 
-//				&& tableNames.Contains( "objectPairRelation_1player" ) 
-//				&& tableNames.Contains( "relationGoldStandard" ) 
-//				&& tableNames.Contains( "confidenceLookupMC" )			
-				) 
+			if( dbManip.VerifyTableExistence( RAY_TABLE_NAMES ) ) 
 			{
 				//setup reading Game specific stuff from database
 //				System.Text.StringBuilder sb = new System.Text.StringBuilder();
@@ -495,7 +384,7 @@ public class GameStateServer : MonoBehaviour
 //				strListRelations = sb.ToString();
 				
 				//choose which Validation strategy you want to use
-				valStrat = new ValidationStrategyMemoized( db );
+				valStrat = new ValidationStrategyMemoized( dbManip );
 				
 //				Dictionary<int,int>.ValueCollection relationClasses = drelationidTOrelationClass.Values;
 //				uniqueRelationClasses = new HashSet<int>( drelationidTOrelationClass.Values );

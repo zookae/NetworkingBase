@@ -224,7 +224,7 @@ public class NetworkServer : MonoBehaviour {
 	
 	void OnGUI()
 	{
-		if( isServer & !GameStateClient.Instance.isConnected )
+        if (isServer) //&& Network.peerType == NetworkPeerType.Disconnected
 		{
 			//GUILayout.BeginArea( new Rect(0,0,120,800) );
 			Rect windowRectServerConfig = new Rect (20, 20, 120, 50);

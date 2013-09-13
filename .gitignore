@@ -1,6 +1,7 @@
 Build
 Temp
 obj
+NetworkingBase_Data
 *.suo
 *.sln
 *.sln.docstates

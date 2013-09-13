@@ -146,7 +146,7 @@ public class NetworkClient : MonoBehaviour {
 	       DebugConsole.LogError("Lost connection to the server");
 	    else
 	       DebugConsole.Log("Successfully disconnected from the server");
-		GameStateClient.Instance.isConnected = false;
+        GameStateClient.Instance.isConnected = false; //Network.peerType == NetworkPeerType.Disconnected
 	}
 	 
 	void OnFailedToConnect(NetworkConnectionError error)
@@ -210,7 +210,7 @@ public class NetworkClient : MonoBehaviour {
 #if !EIL_PRODUCTION
 	void OnGUI()
 	{
-		if( !GameStateClient.Instance.isConnected )
+        if( Network.peerType == NetworkPeerType.Disconnected )
 		{
 			Rect windowRectClient = new Rect (150, 20, 350, 250);
 			windowRectClient = GUILayout.Window(3, windowRectClient, ClientConnectWindow, "Client Connect", GUILayout.Width(350) );

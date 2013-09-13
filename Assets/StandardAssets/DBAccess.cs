@@ -208,8 +208,25 @@ public class DBAccess //: MonoBehaviour
             readArray.Add(reader.GetString(0)); // Fill array with all matches
         }
         return readArray; // return matches
-	}	
-	
+	}
+
+    //added by SMLU
+    public int QueryForeignKeys() {
+        string query = "PRAGMA foreign_keys";
+        dbcmd = dbcon.CreateCommand();
+        dbcmd.CommandText = query;
+        reader = dbcmd.ExecuteReader();
+        int ans = 0;
+        while (reader.Read()) {
+            if (!reader.IsDBNull(0)) {
+                ans = reader.GetInt32(0);                
+            } else
+                DebugConsole.Log("PRAGMA foreign_keys returned null");
+        }
+        DebugConsole.Log("PRAGMA foreign_keys: " + ans);
+        return ans; // return matches
+    }	
+
 	//added by SMLU
 	public List<string> GetAllTableNames()
 	{
