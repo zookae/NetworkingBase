@@ -23,6 +23,7 @@ public class NetworkClient : MonoBehaviour {
 	};
 	public enum MessType_ToServer { 
 		  DeviceUniqueIdentifier=0
+        , SaveDBStr                 // client sends to server information to be saved to database
 		, DomainObjectIDsDeleted    //client sends to server ids of story objects existing in db that client doesn't want
 		, DomainObjectIDsNOTDeleted //client sends to server ids of story objects existing in db that client does want
 		, DomainObjectNamesAdded    //client sends to server names of story objects (possibly existing in db) that client thinks belongs
@@ -385,12 +386,12 @@ public class NetworkClient : MonoBehaviour {
 	}
 
     /*
-	 * The only params that can be sent over rpc:
-	 * int, float, string, NetworkPlayer, NetworkViewID, Vector3, Quaternion
+     * The only params that can be sent over rpc:
+     * int, float, string, NetworkPlayer, NetworkViewID, Vector3, Quaternion
 SEE ALSO http://answers.unity3d.com/questions/318593/using-rpc-to-send-a-list.html
-	 */
-	
-	[RPC]
+     */
+
+    [RPC]
 	void ToServerNoArgs( NetworkViewID viewID , int messType, NetworkMessageInfo nmi )
 	{
 		//DebugConsole.LogWarning( "Called the no param version of the rpc." );

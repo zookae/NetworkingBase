@@ -48,13 +48,31 @@ public class LoginScript : MonoBehaviour {
             //consider doing something like http://docs.unity3d.com/Documentation/Components/net-NetworkInstantiate.html
             //Network.Instantiate(GameObject.CreatePrimitive(PrimitiveType.Cube), Vector3.zero, Quaternion.identity, 0);
         }
-        if( GUILayout.Button( "Spawn local box" ) )
+        if( GUILayout.Button( "Spawn DB box" ) )
         {
             GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
             go.transform.position = Vector3.zero;
             go.transform.rotation = Quaternion.identity;
             go.AddComponent<Rigidbody>();
             go.GetComponent<Rigidbody>().useGravity = false;
+
+            go.name = "DB_cube";
+
+            go.AddComponent<DBPositionToString>(); // attach component to enable DB string representation of position
+
+            go.AddComponent<DBSaveString>(); // attach component to enable send message to server
+            go.GetComponent<DBSaveString>().dbStr = go.GetComponent<DBPositionToString>(); // connect sender w/string-maker
+        }
+        if (GUILayout.Button("DB writing - position")) {
+            DebugConsole.Log("searching for DB_cube");
+
+            GameObject go = GameObject.Find("DB_cube"); // find DB cube from scene
+
+            DebugConsole.Log("sending DB_cube string for position: " + go.transform.position);
+            go.GetComponent<DBSaveString>().SendStringToServer();
+
+            // get all objects tagged saveable
+            // invoke their DBstring construction
         }
         if (GUILayout.Button("Toggle debug")) {
             DebugConsole.IsOpen = !DebugConsole.IsOpen;

@@ -124,6 +124,9 @@ public class GameStateServer : MonoBehaviour
 		
 		switch( messType )
 		{
+            case NetworkClient.MessType_ToServer.SaveDBStr:
+                DebugConsole.Log("client requested save string : " + args[0]);
+                break;
 		case NetworkClient.MessType_ToServer.DomainObjectIDsDeleted:
 //			rgd.Mess_DomainObjectIDsDeleted( player, args );
 //			rgd.SendFinalListAndFirstPairWhenReady( player );
