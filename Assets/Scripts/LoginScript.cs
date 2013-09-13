@@ -23,7 +23,7 @@ public class LoginScript : MonoBehaviour {
                 //Application.LoadLevel(2);
             }
         }
-        if (GUILayout.Button("Spawn network box")) {
+        if (GUILayout.Button("RPC - Spawn network box")) {
             //NetworkViewID viewID = Network.AllocateViewID();
             //networkView.RPC("SpawnBox", RPCMode.AllBuffered, viewID, transform.position);
 
@@ -31,6 +31,20 @@ public class LoginScript : MonoBehaviour {
             DebugConsole.Log("Calling 'SendAllSpawnBox' with network view ID: " + nvid);
             NetworkClient.Instance.SendAllSpawnBox( Vector3.zero, nvid );
             
+            //consider doing something like http://docs.unity3d.com/Documentation/Components/net-NetworkInstantiate.html
+            //Network.Instantiate(GameObject.CreatePrimitive(PrimitiveType.Cube), Vector3.zero, Quaternion.identity, 0);
+        }
+        if (GUILayout.Button("State Synchronization - Spawn network box")) {
+            NetworkViewID nvid = Network.AllocateViewID();
+            DebugConsole.Log("Calling 'SendAllSpawnBoxSync' with network view ID: " + nvid);
+            NetworkClient.Instance.SendAllSpawnBoxSync(Vector3.zero, nvid);
+            //consider doing something like http://docs.unity3d.com/Documentation/Components/net-NetworkInstantiate.html
+            //Network.Instantiate(GameObject.CreatePrimitive(PrimitiveType.Cube), Vector3.zero, Quaternion.identity, 0);
+        }
+        if (GUILayout.Button("State Synchronization - sync global variable")) {
+            NetworkViewID nvid = Network.AllocateViewID();
+            DebugConsole.Log("Calling 'SendAllScoreSync' with network view ID: " + nvid);
+            NetworkClient.Instance.SendAllScoreSync(Vector3.zero, nvid);
             //consider doing something like http://docs.unity3d.com/Documentation/Components/net-NetworkInstantiate.html
             //Network.Instantiate(GameObject.CreatePrimitive(PrimitiveType.Cube), Vector3.zero, Quaternion.identity, 0);
         }

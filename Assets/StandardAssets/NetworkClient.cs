@@ -466,6 +466,18 @@ SEE ALSO http://answers.unity3d.com/questions/318593/using-rpc-to-send-a-list.ht
         networkView.RPC("SpawnBox", RPCMode.AllBuffered, nvid, location );
         DebugConsole.Log("SendAllSpawnBox done");
     }
+
+    public void SendAllSpawnBoxSync(Vector3 location, NetworkViewID nvid) {
+        DebugConsole.Log("SendAllSpawnBoxSync called with viewID: " + nvid);
+        networkView.RPC("SpawnBoxSync", RPCMode.AllBuffered, nvid, location);
+        DebugConsole.Log("SendAllSpawnBoxSync done");
+    }
+
+    public void SendAllScoreSync(Vector3 location, NetworkViewID nvid) {
+        DebugConsole.Log("SendAllScoreSync called with viewID: " + nvid);
+        networkView.RPC("ScoreSync", RPCMode.AllBuffered, nvid, location);
+        DebugConsole.Log("SendAllScoreSync done");
+    }
 	
 	//http://docs.unity3d.com/Documentation/ScriptReference/Network.AllocateViewID.html?from=NetworkView
 	[RPC]
@@ -490,4 +502,58 @@ SEE ALSO http://answers.unity3d.com/questions/318593/using-rpc-to-send-a-list.ht
         
 		DebugConsole.Log( "SpawnBox RPC done." );
 	}
+
+    //http://www.palladiumgames.net/tutorials/unity-networking-tutorial/
+    /// <summary>
+    /// Spawn a simple cube with the associated network viewID at a given location in the world.
+    /// Synchronize state using Unity's statesynchronization (requires an owner)
+    /// </summary>
+    /// <param name="viewID"></param>
+    /// <param name="location"></param>
+    [RPC]
+    public void SpawnBoxSync(NetworkViewID viewID, Vector3 location) {
+        DebugConsole.Log("NetworkClient.SpawnBoxSync called.");
+
+        // Instantate the prefab locally        
+        GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        go.transform.position = location;
+        go.transform.rotation = Quaternion.identity;
+
+        go.AddComponent<NetworkView>(); // attach network view to object - must be present to set viewID
+        go.GetComponent<NetworkView>().viewID = viewID;
+        go.GetComponent<NetworkView>().stateSynchronization = NetworkStateSynchronization.ReliableDeltaCompressed; // use state sync
+        go.GetComponent<NetworkView>().observed = go.transform; // follow transform
+        NetworkViewID vID = go.GetComponent<NetworkView>().viewID;
+        DebugConsole.Log("SpawnBoxSync called with viewID : " + vID);
+
+        go.AddComponent<Rigidbody>();
+        go.GetComponent<Rigidbody>().useGravity = false;
+
+        go.AddComponent<MouseDrag>();
+        DebugConsole.Log("SpawnBoxSync RPC done.");
+    }
+
+    [RPC]
+    public void ScoreSync(NetworkViewID viewID, Vector3 location) {
+        DebugConsole.Log("NetworkClient.ScoreSync called.");
+
+        // Instantate the prefab locally        
+        GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        go.transform.position = location;
+        go.transform.rotation = Quaternion.identity;
+
+        go.AddComponent<NetworkView>(); // attach network view to object - must be present to set viewID
+        go.GetComponent<NetworkView>().viewID = viewID;
+        go.GetComponent<NetworkView>().stateSynchronization = NetworkStateSynchronization.ReliableDeltaCompressed; // use state sync
+        
+        NetworkViewID vID = go.GetComponent<NetworkView>().viewID;
+        DebugConsole.Log("ScoreSync called with viewID : " + vID);
+
+        go.AddComponent<Rigidbody>();
+        go.GetComponent<Rigidbody>().useGravity = false;
+
+        go.AddComponent<NetworkScore>();
+        go.GetComponent<NetworkView>().observed = go.GetComponent<NetworkScore>(); // follow script
+        DebugConsole.Log("ScoreSync RPC done.");
+    }
 }
