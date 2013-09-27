@@ -1,6 +1,6 @@
 How to use:
   Must have "sceneNetworking", can be named anything, but must be 0th scene   
-  Must attach "networkClient.cs" and "networkServer.cs" to the networkCubePrefab
+  Must attach "networkClient.cs" and "networkServer.cs" and "DBSaveString.cs" to the networkCubePrefab
   Must add a "Network View" to the networkCubePrefab (click on the cube, then "component" menu -> misc -> network view)
     //as an aside, you can turn "state synchronization" on, which would allow for sharing network views of objects (auto synch obj movements, etc)
   MUST set "run in background" to true (checked) so that the server ... runs in the back ground (without focus)
