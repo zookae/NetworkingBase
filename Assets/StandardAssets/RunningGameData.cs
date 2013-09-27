@@ -1,6 +1,10 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
+/// <summary>
+/// Game level data, NOT player level
+/// </summary>
 public abstract class RunningGameData
 {
 #if UNITY_WEBPLAYER
@@ -17,14 +21,22 @@ public abstract class RunningGameData
 //	//public System.Text.StringBuilder sbListSeenObjpairid = new System.Text.StringBuilder(); //for the sql query
 //	//public List<int> listSeenObjpairid = new List<int>();
 //	public int domainID = -1;
-	
-	abstract public void SendWinnerMessage( );
+
+    public int gameID;
+    public Dictionary<NetworkPlayer, PlayerData> dPlayerData = null;
+
+    abstract public void SendWinnerMessage( );
 	abstract public void EndGame( string mess_p1, string mess_p2 );
 	abstract public void SetUniqueDeviceID( NetworkPlayer player, string udid );		
 	
 	abstract public void PlayerDisconnected(NetworkPlayer player);
 	abstract public void ResetVarsForNewGame();
 
+    public RunningGameData( GameStateServer inGSS, int gid )
+	{
+		this.gss = inGSS;
+        this.gameID = gid;
+	}
 	
 //	virtual public System.Collections.Generic.KeyValuePair<int/*domainId*/,System.Text.StringBuilder/*domainid|||domainName|||domainDescr*/> 
 //		SelectDomainid()
@@ -145,10 +157,7 @@ public abstract class RunningGameData
 	abstract public void Mess_PlayerHasNoLives( NetworkPlayer player, string[] args );
 //	abstract public void Mess_SelectedRelation( NetworkPlayer player, string[] args );
 	
-	protected RunningGameData( GameStateServer inGSS )
-	{
-		this.gss = inGSS;
-	}
+
 #endif
 }
 

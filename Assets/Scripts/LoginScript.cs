@@ -88,6 +88,13 @@ public class LoginScript : MonoBehaviour {
             // get all objects tagged saveable
             // invoke their DBstring construction
         }
+        if (GUILayout.Button("DB writing - singleton-style")) {
+            DebugConsole.Log("searching for DB_cube");
+            GameObject go = GameObject.Find("DB_cube");
+            DebugConsole.Log("sending DB_cube string for position: " + go.transform.position);
+            DebugConsole.Log("DBClientProxy instance is: " + DBClientProxy.Instance.ToString());
+            DBClientProxy.Instance.SaveToDB(go.transform.position.ToString());
+        }
         if (GUILayout.Button("Toggle debug")) {
             DebugConsole.IsOpen = !DebugConsole.IsOpen;
         }

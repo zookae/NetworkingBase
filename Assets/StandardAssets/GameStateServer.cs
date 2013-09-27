@@ -83,7 +83,7 @@ public class GameStateServer : MonoBehaviour
 				playersWaitingToGo.RemoveAt( tmpI ); 
 				
 				//make single player data
-				RunningGameData_1player rgd1p = new RunningGameData_1player( this, player ); 
+				RunningGameData_1player rgd1p = new RunningGameData_1player( this, -1, player ); 
 				rgd = rgd1p;
 				this.dPlayerToGamedata.Add( player, rgd1p );
 
@@ -120,6 +120,8 @@ public class GameStateServer : MonoBehaviour
 		{
             case NetworkClient.MessType_ToServer.SaveDBStr:
                 DebugConsole.Log("client requested save string : " + args);
+                // TODO : save to DB
+                // gameid, objectid, playerid, timestamp, objectdata
                 break;
 		case NetworkClient.MessType_ToServer.DomainObjectIDsDeleted:
 //			rgd.Mess_DomainObjectIDsDeleted( player, args );

@@ -13,7 +13,7 @@ class RunningGameData_1player: RunningGameData
 	public bool bHaveSavedScores = false;
 	public int iOfPlayAgain = 0;
 	
-	public RunningGameData_1player( GameStateServer inGSS, NetworkPlayer inPlayer ) : base( inGSS )
+	public RunningGameData_1player( GameStateServer inGSS, int gid, NetworkPlayer inPlayer ) : base( inGSS, gid )
 	{
 		this.player = inPlayer;
 		this.playerData = new PlayerData();

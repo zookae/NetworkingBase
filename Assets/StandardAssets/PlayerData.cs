@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-class PlayerData
+public class PlayerData
 {
 	public int playerScore=0;
 	public string uniqueDeviceID = null;
