@@ -97,6 +97,17 @@ public class DBManipulation  {
         return playerid;
     }
 
+    internal void dataDump(int gameid, int playerid, string data) {
+        Debug.Log("dataDump");
+        openConnection();
+
+        System.Text.StringBuilder sbSQLInsert = new System.Text.StringBuilder();
+        sbSQLInsert.Append("INSERT OR IGNORE INTO savedata (gameid, playerid, thedata) VALUES ( ").Append(gameid).Append(", ").Append(playerid).Append(", '").Append(data).Append("' )");
+        db.BasicQuery(sbSQLInsert.ToString()); //inserts
+
+        closeConnection();
+    }
+
     //actually also checks views
     internal bool VerifyTableExistence( string[] allNames ) {
         openConnection();

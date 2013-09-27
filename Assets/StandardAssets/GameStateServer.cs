@@ -25,9 +25,9 @@ public class GameStateServer : MonoBehaviour
 	// Right now, it'll load espDB.sqlite3 in the project's root folder.
 	// If one doesn't exist, it will be automatically created.
 	public static String databaseName = "db.sqlite3";
-    private string[] RAY_TABLE_NAMES = new string[] {"player", "topscore", "confidenceLookupMC"};
+    private string[] RAY_TABLE_NAMES = new string[] { "player", "topscore", "confidenceLookupMC", "savedata", "game", "gamedetail" };
 
-    internal DBManipulation dbManip = new DBManipulation( databaseName, false, true );
+    internal DBManipulation dbManip = new DBManipulation( databaseName, false, false );
 	internal ValidationStrategy valStrat = null; //initialized in Start() so that we can use the momoized (database) version intelligently/safely
 	
 	/// <summary>
@@ -83,7 +83,8 @@ public class GameStateServer : MonoBehaviour
 				playersWaitingToGo.RemoveAt( tmpI ); 
 				
 				//make single player data
-				RunningGameData_1player rgd1p = new RunningGameData_1player( this, -1, player ); 
+				RunningGameData_1player rgd1p = new RunningGameData_1player( this, -1, player );
+                rgd1p.dPlayerData.Add(player, new PlayerData()); 
 				rgd = rgd1p;
 				this.dPlayerToGamedata.Add( player, rgd1p );
 
@@ -120,8 +121,8 @@ public class GameStateServer : MonoBehaviour
 		{
             case NetworkClient.MessType_ToServer.SaveDBStr:
                 DebugConsole.Log("client requested save string : " + args);
-                // TODO : save to DB
-                // gameid, objectid, playerid, timestamp, objectdata
+                dbManip.dataDump(rgd.gameID, rgd.dPlayerData[player].playerid, args);
+                DebugConsole.Log("dumped string info : " + rgd.gameID + ", " + rgd.dPlayerData[player].playerid + ", " + args);
                 break;
 		case NetworkClient.MessType_ToServer.DomainObjectIDsDeleted:
 //			rgd.Mess_DomainObjectIDsDeleted( player, args );

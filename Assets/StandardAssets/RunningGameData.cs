@@ -23,11 +23,26 @@ public abstract class RunningGameData
 //	public int domainID = -1;
 
     public int gameID;
-    public Dictionary<NetworkPlayer, PlayerData> dPlayerData = null;
+    public Dictionary<NetworkPlayer, PlayerData> dPlayerData = new Dictionary<NetworkPlayer,PlayerData>();
 
     abstract public void SendWinnerMessage( );
 	abstract public void EndGame( string mess_p1, string mess_p2 );
-	abstract public void SetUniqueDeviceID( NetworkPlayer player, string udid );		
+	//abstract public void SetUniqueDeviceID( NetworkPlayer player, string udid );		
+    public void SetUniqueDeviceID(NetworkPlayer player, string udid) {
+        Debug.Log("SetUniqueDeviceID for player " + player + " with udid " + udid);
+        dPlayerData[player].uniqueDeviceID = udid;
+
+        int playerid = gss.dbManip.getPlayerID(udid);
+        if (playerid == -1) {//first time player; welcome!
+            DebugConsole.Log("Got a first time player!");
+            playerid = gss.dbManip.createPlayerID(udid);
+            dPlayerData[player].isFirstTimePlayer = true;
+        } else {//returning player
+            DebugConsole.Log("We have a returning player");
+            dPlayerData[player].isFirstTimePlayer = false;
+        }
+        dPlayerData[player].playerid = playerid;
+    }
 	
 	abstract public void PlayerDisconnected(NetworkPlayer player);
 	abstract public void ResetVarsForNewGame();

@@ -7,16 +7,15 @@ class RunningGameData_1player: RunningGameData
 #if UNITY_WEBPLAYER
 #else
 	//static readonly 
-	public NetworkPlayer player;
-	public PlayerData playerData = null;
 	
 	public bool bHaveSavedScores = false;
 	public int iOfPlayAgain = 0;
+
+    private NetworkPlayer player;
 	
 	public RunningGameData_1player( GameStateServer inGSS, int gid, NetworkPlayer inPlayer ) : base( inGSS, gid )
 	{
-		this.player = inPlayer;
-		this.playerData = new PlayerData();
+        player = inPlayer;
 	}
 	/*
 	 * 1] how to select next obj pair for player:
@@ -38,24 +37,7 @@ class RunningGameData_1player: RunningGameData
 		
 	}
 	
-	override public void SetUniqueDeviceID( NetworkPlayer player, string udid )
-	{
-		Debug.Log( "SetUniqueDeviceID for player " + player + " with udid " + udid );
-		playerData.uniqueDeviceID = udid;
-
-        int playerid = gss.dbManip.getPlayerID(udid);
-		if( playerid == -1 ) 
-		{//first time player; welcome!
-			DebugConsole.Log( "Got a first time player!" );
-            playerid = gss.dbManip.createPlayerID(udid);
-			playerData.isFirstTimePlayer = true;
-		}
-		else{//returning player
-			DebugConsole.Log( "We have a returning player" );
-			playerData.isFirstTimePlayer = false;
-		}
-		playerData.playerid = playerid;
-	}
+	
 	
 //	override public System.Collections.Generic.KeyValuePair<int/*domainId*/,System.Text.StringBuilder/*domainid|||domainName|||domainDescr*/> 
 //		SelectDomainid()
@@ -212,7 +194,7 @@ class RunningGameData_1player: RunningGameData
 	{
 		if( /* this.iNumSeen > 0 && */ bHaveSavedScores == false )
 		{//only save if the player has seen at least 1 relation, and has not reached 'end game'
-            gss.dbManip.SavePlayerScoreStats(playerData, this.iOfPlayAgain);
+            gss.dbManip.SavePlayerScoreStats(dPlayerData[player], this.iOfPlayAgain);
 			
 			bHaveSavedScores = true;
 			iOfPlayAgain++; //update count of play again

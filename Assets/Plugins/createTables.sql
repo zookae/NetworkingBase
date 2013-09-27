@@ -10,10 +10,37 @@ CREATE TABLE IF NOT EXISTS player(
   playerid    INTEGER PRIMARY KEY, 
   udid		  TEXT NOT NULL CHECK( udid <> '' ),
   gamesPlayed INTEGER NOT NULL DEFAULT 0,  
-  dAdded      TIMESTAMP NOT NULL DEFAULT current_timestamp,
+  dAdded      TIMESTAMP NOT NULL DEFAULT current_timestamp,	
   UNIQUE( udid ) 
 );
 CREATE INDEX IF NOT EXISTS playerIndex ON player( udid ); -- for efficiency (ie "select * where udid=?" is way faster)
+
+CREATE TABLE IF NOT EXISTS game(
+	gameid		INTEGER PRIMARY KEY,
+	name		TEXT,
+	dAdded      TIMESTAMP NOT NULL DEFAULT current_timestamp
+);
+
+CREATE TABLE IF NOT EXISTS gamedetail(
+	gdk			INTEGER PRIMARY KEY,
+	gameid		INTEGER NOT NULL REFERENCES game(gameid),
+	param		TEXT,
+	val			TEXT,
+	UNIQUE( gameid, param, val )
+);
+
+-- table storing generic transaction data
+-- should be ETL'd to move to new tables for analysis/use
+CREATE TABLE IF NOT EXISTS savedata(
+	opk			INTEGER PRIMARY KEY,
+	gameid		INTEGER NOT NULL REFERENCES game(gameid),
+	playerid    INTEGER NOT NULL,
+--	datatype	TEXT NOT NULL CHECK( thedata <> ''),
+	thedata		TEXT NOT NULL CHECK( thedata <> ''),
+	dAdded      TIMESTAMP NOT NULL DEFAULT current_timestamp
+);
+CREATE INDEX IF NOT EXISTS gameIndex ON savedata( gameid );
+CREATE INDEX IF NOT EXISTS playerIndex ON savedata( playerid );
 
 -- not yet used, but might be cool 
 CREATE TABLE IF NOT EXISTS topscore(
