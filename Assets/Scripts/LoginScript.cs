@@ -1,14 +1,33 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 //imagine this is your actual client side game -- this script shows how you might connect etc
 public class LoginScript : MonoBehaviour {
+    
+    //IObserver<NetworkMailbox<NetworkClient.MessType_ToClient>.Envelope<NetworkClient.MessType_ToClient>>
+    private SillyObserver messObserver = null;
+    public class SillyObserver : IObserver<NetworkMailbox<NetworkClient.MessType_ToClient>.Envelope<NetworkClient.MessType_ToClient>>
+    {
+        public IDisposable disposable{ get; set;}
+        public virtual void OnNext( NetworkMailbox<NetworkClient.MessType_ToClient>.Envelope<NetworkClient.MessType_ToClient> value )
+        {
+            DebugConsole.Log( "SillyObserver notified of message: " + value.ToString() );
+            this.Unsubscribe();
+        }
+
+        public void Unsubscribe()
+        {
+            if (disposable != null) 
+                disposable.Dispose(); 
+        }
+    }
 
     void OnGUI() {        
             GUILayout.BeginArea( new Rect(0,0,200,800) );
             Rect windowRectConfig = new Rect(20, 20, 150, 500);
             windowRectConfig = GUILayout.Window(0, windowRectConfig, ConfigWindow, "Config", GUILayout.Width(100));
-            GUILayout.EndArea();
+            GUILayout.EndArea(); 
     }
 
     void ConfigWindow(int windowID) {
@@ -94,6 +113,14 @@ public class LoginScript : MonoBehaviour {
             DebugConsole.Log("sending DB_cube string for position: " + go.transform.position);
             DebugConsole.Log("DBClientProxy instance is: " + DBClientProxy.Instance.ToString());
             DBClientProxy.Instance.SaveToDB(go.transform.position.ToString());
+        }
+        if (GUILayout.Button("DB reading - udid")){
+            DebugConsole.Log("DB reading - udid... start.");
+            if (messObserver == null)
+                messObserver = new SillyObserver();
+            messObserver.disposable = GameStateClient.Instance.mailbox.Subscribe( messObserver, NetworkClient.MessType_ToClient.UNTYPED );
+            NetworkClient.Instance.SendServerMess(NetworkClient.MessType_ToServer.ReadDBStr, "udid"); //not a blocking call
+            DebugConsole.Log("DB reading - udid... done.");
         }
         if (GUILayout.Button("Toggle debug")) {
             DebugConsole.IsOpen = !DebugConsole.IsOpen;

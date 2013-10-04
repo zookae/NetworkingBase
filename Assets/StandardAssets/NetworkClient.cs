@@ -20,10 +20,12 @@ public class NetworkClient : MonoBehaviour {
 		, GameOver              //server sends to client when the game is over
 		, RelationMatchResult   //server sends to client to indicate whether the player pair agreed on the previous relation
 		, YouWin				//server send to client if the game is over and they have the higher score in the player pair
+        , UNTYPED               //a catch-all type 
 	};
 	public enum MessType_ToServer { 
 		  DeviceUniqueIdentifier=0
         , SaveDBStr                 // client sends to server information to be saved to database
+        , ReadDBStr                 // client sends to server information to be read from database
 		, DomainObjectIDsDeleted    //client sends to server ids of story objects existing in db that client doesn't want
 		, DomainObjectIDsNOTDeleted //client sends to server ids of story objects existing in db that client does want
 		, DomainObjectNamesAdded    //client sends to server names of story objects (possibly existing in db) that client thinks belongs

@@ -119,6 +119,11 @@ public class GameStateServer : MonoBehaviour
 		
 		switch( messType )
 		{
+            //TODO case NetworkClient.MessType_ToServer.ReadDBStr:  "udid" arg
+            case NetworkClient.MessType_ToServer.ReadDBStr:
+                if( String.Compare( "udid", args, true ) == 0 )
+                    NetworkClient.Instance.SendClientMess( player, NetworkClient.MessType_ToClient.UNTYPED, dbManip.getPlayerUDID( rgd.dPlayerData[ player ].playerid ) ); 
+                break;
             case NetworkClient.MessType_ToServer.SaveDBStr:
                 DebugConsole.Log("client requested save string : " + args);
                 dbManip.dataDump(rgd.gameID, rgd.dPlayerData[player].playerid, args);

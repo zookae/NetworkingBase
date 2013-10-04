@@ -10,6 +10,8 @@ public class GameStateClient : MonoBehaviour
 	private static bool doneStart = false;
 	
 	public bool isConnected = false;
+
+    public NetworkMailbox<NetworkClient.MessType_ToClient> mailbox = new NetworkMailbox<NetworkClient.MessType_ToClient>();
 	
 	/// <summary>
 	/// Static instance of the GameStateClient.
@@ -54,8 +56,12 @@ public class GameStateClient : MonoBehaviour
 		if( args != null && args.Length > 0 ) 
 			sb.Append( "args[] contains: " ).Append( NetworkClient.RayToString( args, "," ) );
 		Debug.Log( sb.ToString() ); DebugConsole.Log( sb.ToString() );
-		
-		switch( messType )
+        /*
+         * NOTE! any message that needs instant reaction should have a "case ..." here; 
+         * otherwise, the "case default" is to throw the message in a queue 
+         * (the queue we're using is a NetworkMailbox; by default the queue length is unbounded!)
+         */
+        switch ( messType )
 		{
 		case NetworkClient.MessType_ToClient.PlayerPairReady:
 //			currState = StateEnum.PlayerPairReady;
@@ -211,7 +217,8 @@ public class GameStateClient : MonoBehaviour
 			break;
 			
 		default:
-			DebugConsole.Log( "MessageFromServer: default" );
+			DebugConsole.Log( "MessageFromServer: default (adding to mailbox)" );
+            mailbox.AddMessage( messType, args );
 			break;
 		}
 	}

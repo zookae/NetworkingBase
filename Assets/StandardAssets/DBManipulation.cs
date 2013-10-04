@@ -74,6 +74,28 @@ public class DBManipulation  {
         return playerid;
     }
 
+    //returns null if the player doesn't exist
+    internal string getPlayerUDID( int playerid )
+    {
+        openConnection();
+
+        Debug.Log( "getPlayerUDID" );
+        string playerUDID = null;
+        System.Text.StringBuilder sbSQLSelect = new System.Text.StringBuilder();
+
+        sbSQLSelect.Append( "SELECT udid FROM player WHERE playerid=" ).Append( playerid );
+
+        System.Data.IDataReader res = db.BasicQuery( sbSQLSelect.ToString() );
+
+        if (res.Read())
+        {//player already exists; return the udid
+            playerUDID = res.GetString( 0 );
+        }//else we don't have a player with that id 
+
+        closeConnection();
+        return playerUDID;
+    }
+
     internal int createPlayerID(string udid) {
         Debug.Log("createPlayerID");
         openConnection();

@@ -223,7 +223,7 @@ public class DBAccess //: MonoBehaviour
             } else
                 DebugConsole.Log("PRAGMA foreign_keys returned null");
         }
-        DebugConsole.Log("PRAGMA foreign_keys: " + ans);
+        //DebugConsole.Log("PRAGMA foreign_keys: " + ans);
         return ans; // return matches
     }	
 
