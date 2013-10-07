@@ -4,18 +4,18 @@ using System.Text;
 using System;
 
 //note: there currently is no policy for only keeping the N most recent messages in memory (ie deleting old ones)
-public class NetworkMailbox<TEnum> : IObservable<NetworkMailbox<TEnum>.Envelope<TEnum>> where TEnum : struct, IConvertible, IComparable, IFormattable
+public class NetworkMailbox<TEnum> : IObservable<NetworkMailbox<TEnum>.Envelope> where TEnum : struct, IConvertible, IComparable, IFormattable
 {//http://msdn.microsoft.com/en-us/library/dd990377.aspx
 
     private int inMessageCnt = 0;
     private static TEnum tInst = new TEnum();
-    private Dictionary<TEnum /*NetworkClient.MessType_ToClient*/, List<Envelope<TEnum>>> dMessages = new Dictionary<TEnum, List<Envelope<TEnum>>>();
-    private List<Envelope<TEnum>> listAllMessages = new List<Envelope<TEnum>>();
+    private Dictionary<TEnum /*NetworkClient.MessType_ToClient*/, List<Envelope>> dMessages = new Dictionary<TEnum, List<Envelope>>();
+    private List<Envelope> listAllMessages = new List<Envelope>();
 
-    private Dictionary<TEnum /*NetworkClient.MessType_ToClient*/, List<IObserver<Envelope<TEnum>>>> dObserversOfType = new Dictionary<TEnum /*NetworkClient.MessType_ToClient*/, List<IObserver<Envelope<TEnum>>>>();
-    private List<IObserver<Envelope<TEnum>>> observersOfAll = new List<IObserver<Envelope<TEnum>>>();
+    private Dictionary<TEnum /*NetworkClient.MessType_ToClient*/, List<IObserver<Envelope>>> dObserversOfType = new Dictionary<TEnum /*NetworkClient.MessType_ToClient*/, List<IObserver<Envelope>>>();
+    private List<IObserver<Envelope>> observersOfAll = new List<IObserver<Envelope>>();
 
-    public class Envelope<TEnum> : IComparable<Envelope<TEnum>> where TEnum : struct, IConvertible, IComparable, IFormattable
+    public class Envelope: IComparable<Envelope> 
     {
         public int messID{ get; private set; }
         public TEnum messType{ get; private set; }
@@ -26,7 +26,7 @@ public class NetworkMailbox<TEnum> : IObservable<NetworkMailbox<TEnum>.Envelope<
         //-1: This object is < than other
         // 0: This object is == to other
         //+1: This object is > than other
-        public virtual int CompareTo( Envelope<TEnum> other )
+        public virtual int CompareTo( Envelope other )
         {
             if (other == null) return 1;
             if (other == this) return 0;
@@ -64,10 +64,10 @@ public class NetworkMailbox<TEnum> : IObservable<NetworkMailbox<TEnum>.Envelope<
 
     private class Unsubscriber : IDisposable
     {
-        private List<IObserver<Envelope<TEnum>>> _observers;
-        private IObserver<Envelope<TEnum>> _observer;
+        private List<IObserver<Envelope>> _observers;
+        private IObserver<Envelope> _observer;
 
-        public Unsubscriber( List<IObserver<Envelope<TEnum>>> observers, IObserver<Envelope<TEnum>> observer )
+        public Unsubscriber( List<IObserver<Envelope>> observers, IObserver<Envelope> observer )
         {
             this._observers = observers;
             this._observer = observer;
@@ -87,11 +87,11 @@ public class NetworkMailbox<TEnum> : IObservable<NetworkMailbox<TEnum>.Envelope<
     /// <param name="messType"></param>
     /// <returns></returns>
     //NetworkMailbox<NetworkClient.MessType_ToClient>.Envelope
-    public virtual IDisposable Subscribe( IObserver<NetworkMailbox<TEnum>.Envelope<TEnum>> observer, TEnum messType /*mess type*/)
+    public virtual IDisposable Subscribe( IObserver<NetworkMailbox<TEnum>.Envelope> observer, TEnum messType /*mess type*/)
     {
         if (!dObserversOfType.ContainsKey( messType ))
         {
-            dObserversOfType.Add( messType, new List<IObserver<Envelope<TEnum>>>() );
+            dObserversOfType.Add( messType, new List<IObserver<Envelope>>() );
         }
         if (!dObserversOfType[ messType ].Contains( observer ))
         {
@@ -100,7 +100,7 @@ public class NetworkMailbox<TEnum> : IObservable<NetworkMailbox<TEnum>.Envelope<
         return new Unsubscriber( dObserversOfType[ messType ], observer );
     }
 
-    public IDisposable Subscribe( IObserver<Envelope<TEnum>> observer )
+    public IDisposable Subscribe( IObserver<Envelope> observer )
     {
         if (!observersOfAll.Contains( observer ))
         {
@@ -113,12 +113,12 @@ public class NetworkMailbox<TEnum> : IObservable<NetworkMailbox<TEnum>.Envelope<
     {
         //DebugConsole.Log( "NetworkMailbox.AddMessage: " + ( messType.ToInt32( new System.Globalization.CultureInfo( "en-US" ) ) ) + " converts to " + ( (TEnum)messType ).ToString() );
         inMessageCnt++;
-        Envelope<TEnum> env = new Envelope<TEnum>( inMessageCnt, messType, args );
+        Envelope env = new Envelope( inMessageCnt, messType, args );
         DebugConsole.Log( "NetworkMailbox.AddMessage created envelope: " + env.ToString() );
         listAllMessages.Add( env );
         if (!dMessages.ContainsKey( messType ))
         {
-            dMessages.Add( messType, new List<Envelope<TEnum>>() );
+            dMessages.Add( messType, new List<Envelope>() );
         }
         dMessages[ messType ].Add( env );
 
@@ -130,7 +130,7 @@ public class NetworkMailbox<TEnum> : IObservable<NetworkMailbox<TEnum>.Envelope<
     }
 
     //returns null if we have no messages of specified type
-    public List<Envelope<TEnum>> getAllMessagesOfType( TEnum /*NetworkClient.MessType_ToClient*/ messType )
+    public List<Envelope> getAllMessagesOfType( TEnum /*NetworkClient.MessType_ToClient*/ messType )
     {
         if (!dMessages.ContainsKey( messType ))
             return null;
@@ -138,15 +138,15 @@ public class NetworkMailbox<TEnum> : IObservable<NetworkMailbox<TEnum>.Envelope<
     }
 
     //returns the message if found, otherwise returns null
-    public Envelope<TEnum> getMessageWithID( int messID )
+    public Envelope getMessageWithID( int messID )
     {
-        int index = listAllMessages.BinarySearch( new Envelope<TEnum>( messID, tInst, null ) );
+        int index = listAllMessages.BinarySearch( new Envelope( messID, tInst, null ) );
         if (index >= 0)
             return listAllMessages[ index ];
         return null;
     }
 
-    public void deleteMessage( Envelope<TEnum> e )
+    public void deleteMessage( Envelope e )
     {
         int index = listAllMessages.BinarySearch( e );
         if (index >= 0)

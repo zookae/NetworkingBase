@@ -7,10 +7,10 @@ public class LoginScript : MonoBehaviour {
     
     //IObserver<NetworkMailbox<NetworkClient.MessType_ToClient>.Envelope<NetworkClient.MessType_ToClient>>
     private SillyObserver messObserver = null;
-    public class SillyObserver : IObserver<NetworkMailbox<NetworkClient.MessType_ToClient>.Envelope<NetworkClient.MessType_ToClient>>
+    public class SillyObserver : IObserver<NetworkMailbox<NetworkClient.MessType_ToClient>.Envelope>
     {
         public IDisposable disposable{ get; set;}
-        public virtual void OnNext( NetworkMailbox<NetworkClient.MessType_ToClient>.Envelope<NetworkClient.MessType_ToClient> value )
+        public virtual void OnNext( NetworkMailbox<NetworkClient.MessType_ToClient>.Envelope value )
         {
             DebugConsole.Log( "SillyObserver notified of message: " + value.ToString() );
             this.Unsubscribe();
