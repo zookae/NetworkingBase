@@ -1,3 +1,12 @@
+How to merge into your project:
+	(1) Pull NetworkingBase and copy all files and folders except .git/ and ".git*" (and probably Library/)
+	(2) Paste this into your project, merge folders, and skip all Library/ files when asked.
+	(3) Within your project set appropriate parameters:
+		(1) Build Settings... -> Player Settings... -> .NET compatibility should be .NET 2.0 (rather than default .NET subset)
+		(2) Within Player Settings... -> Resolution and Presentation -> Run In Background must be checked.
+		(3) Ensure sceneNetworking.unity is 0th scene in the build order
+	(4) Update server identification information in NetworkServer.cs. Must change SERVER_GAMETYPENAME and SERVER_GAMENAME.
+
 How to use:
   Must have "sceneNetworking", can be named anything, but must be 0th scene   
   Must attach "networkClient.cs" and "networkServer.cs" and "DBSaveString.cs" to the networkCubePrefab
